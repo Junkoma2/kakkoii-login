@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>かっこよくログインしたい</title>
+  <meta name="description" content="適当に打ってもログインできる。かっこよく。" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <div id="screen-login" class="screen">
+      <div class="login-box">
+        <div class="login-header">
+          <div class="logo-mark">⬡</div>
+          <h1>SYSTEM LOGIN</h1>
+          <p class="login-sub">AUTHORIZED PERSONNEL ONLY</p>
+        </div>
+        <form id="login-form" autocomplete="off" novalidate>
+          <div class="field">
+            <label for="email">ID</label>
+            <input id="email" type="text" placeholder="user@example.com" spellcheck="false" />
+          </div>
+          <div class="field">
+            <label for="password">PASSWORD</label>
+            <input id="password" type="password" placeholder="••••••••" />
+            <p id="error-msg" class="error-msg" hidden>パスワードが短すぎます</p>
+          </div>
+          <button id="login-btn" type="submit" class="login-btn">
+            <span id="btn-label">LOGIN</span>
+          </button>
+        </form>
+      </div>
+      <div class="scanline"></div>
+    </div>
+
+    <div id="screen-loading" class="screen" hidden>
+      <div class="loading-inner">
+        <pre id="loading-log" class="loading-log"></pre>
+      </div>
+    </div>
+
+    <div id="screen-success" class="screen" hidden>
+      <div class="success-inner">
+        <div class="access-badge">ACCESS GRANTED</div>
+        <h2 id="welcome-name"></h2>
+        <p class="success-sub">認証完了 — セキュアチャンネル確立済み</p>
+        <div class="info-grid">
+          <div><span>ステータス</span><strong class="green">ONLINE</strong></div>
+          <div><span>認証レベル</span><strong>LEVEL 5</strong></div>
+          <div><span>セッション</span><strong id="session-id"></strong></div>
+          <div><span>ログイン時刻</span><strong id="login-time"></strong></div>
+        </div>
+        <button id="logout-btn" type="button" class="logout-btn">LOGOUT</button>
+      </div>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

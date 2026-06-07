@@ -1,0 +1,231 @@
+:root {
+  --bg: #050a0e;
+  --surface: #0d1117;
+  --border: #1f3040;
+  --accent: #00ff88;
+  --accent-dim: rgba(0,255,136,.15);
+  --text: #c9d1d9;
+  --muted: #4a5568;
+  font-family: "Courier New", Courier, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#app { width: 100%; }
+
+/* ---- screens ---- */
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ---- login ---- */
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px 36px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 60px rgba(0,255,136,.05);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.logo-mark {
+  font-size: 32px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: block;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.login-sub {
+  font-size: 10px;
+  letter-spacing: .15em;
+  color: var(--muted);
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  background: #0a1520;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color .2s;
+}
+
+input:focus { border-color: var(--accent); }
+
+.error-msg {
+  color: #ff4444;
+  font-size: 12px;
+  margin-top: 6px;
+  letter-spacing: .05em;
+}
+
+.login-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  padding: 12px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background .2s;
+}
+
+.login-btn:hover { background: var(--accent-dim); }
+.login-btn:disabled { opacity: .5; cursor: default; }
+
+.scanline {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.08) 2px,
+    rgba(0,0,0,.08) 4px
+  );
+  z-index: 0;
+}
+
+/* shake */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.shake { animation: shake .4s ease; }
+
+/* ---- loading ---- */
+#screen-loading {
+  background: var(--bg);
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+}
+
+.loading-log {
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--accent);
+  white-space: pre-wrap;
+  max-width: 600px;
+}
+
+/* ---- success ---- */
+#screen-success {
+  flex-direction: column;
+  gap: 28px;
+}
+
+.success-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.access-badge {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 6px 20px;
+  border-radius: 2px;
+}
+
+h2 {
+  font-size: 28px;
+  color: var(--accent);
+  letter-spacing: .1em;
+}
+
+.success-sub {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .1em;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 32px;
+  text-align: left;
+  border: 1px solid var(--border);
+  padding: 20px 28px;
+  border-radius: 2px;
+}
+
+.info-grid div { display: flex; flex-direction: column; gap: 4px; }
+.info-grid span { font-size: 10px; letter-spacing: .12em; color: var(--muted); }
+.info-grid strong { font-size: 14px; }
+.green { color: var(--accent); }
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: .2em;
+  padding: 8px 20px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color .2s, color .2s;
+}
+
+.logout-btn:hover { border-color: var(--accent); color: var(--accent); }
