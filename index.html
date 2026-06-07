@@ -42,18 +42,23 @@
     </div>
 
     <div id="screen-success" class="screen" hidden>
+      <div class="success-flash"></div>
       <div class="success-inner">
-        <div class="access-badge">ACCESS GRANTED</div>
+        <div class="success-stamp">
+          <div class="stamp-ring"></div>
+          <span class="stamp-check">✓</span>
+        </div>
+        <div class="access-granted-text">ACCESS<br>GRANTED</div>
         <h2 id="welcome-name"></h2>
-        <p class="success-sub">認証完了 — セキュアチャンネル確立済み</p>
         <div class="info-grid">
-          <div><span>ステータス</span><strong class="green">ONLINE</strong></div>
+          <div><span>ステータス</span><strong class="green">● ONLINE</strong></div>
           <div><span>認証レベル</span><strong>LEVEL 5</strong></div>
           <div><span>セッション</span><strong id="session-id"></strong></div>
           <div><span>ログイン時刻</span><strong id="login-time"></strong></div>
         </div>
         <button id="logout-btn" type="button" class="logout-btn">LOGOUT</button>
       </div>
+      <div class="scanline"></div>
     </div>
 
     <p id="app-version" class="app-version"></p>
