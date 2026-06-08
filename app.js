@@ -4,6 +4,7 @@ const btnLabel   = document.getElementById("btn-label");
 const emailInput = document.getElementById("email");
 const pwInput    = document.getElementById("password");
 const errorMsg   = document.getElementById("error-msg");
+const emailError = document.getElementById("email-error");
 const logoutBtn  = document.getElementById("logout-btn");
 
 const screens = {
@@ -20,7 +21,15 @@ function show(name) {
 // ---- ログイン処理 ----
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  const email = emailInput.value.trim();
   const pw = pwInput.value;
+  if (!email) {
+    emailError.hidden = false;
+    emailInput.closest(".field").classList.add("shake");
+    setTimeout(() => emailInput.closest(".field").classList.remove("shake"), 400);
+    return;
+  }
+  emailError.hidden = true;
   if (pw.length <= 4) {
     errorMsg.hidden = false;
     pwInput.closest(".field").classList.add("shake");
@@ -66,7 +75,7 @@ function startLoading() {
 function showSuccess() {
   show("success");
 
-  const email = emailInput.value || "user@system";
+  const email = emailInput.value.trim();
   const name = email.split("@")[0].toUpperCase();
   document.getElementById("welcome-name").textContent = "WELCOME, " + name;
 
@@ -82,6 +91,7 @@ function showSuccess() {
 logoutBtn.addEventListener("click", () => {
   emailInput.value = "";
   pwInput.value = "";
+  emailError.hidden = true;
   errorMsg.hidden = true;
   loginBtn.disabled = false;
   btnLabel.textContent = "LOGIN";
