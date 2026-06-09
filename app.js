@@ -5,23 +5,7 @@ const emailInput = document.getElementById("email");
 const pwInput    = document.getElementById("password");
 const errorMsg   = document.getElementById("error-msg");
 const emailError = document.getElementById("email-error");
-const logoutBtn  = document.getElementById("logout-btn");
 
-const screens = {
-  login:   document.getElementById("screen-login"),
-  loading: document.getElementById("screen-loading"),
-  success: document.getElementById("screen-success"),
-};
-
-function show(name) {
-  Object.values(screens).forEach((s) => s.hidden = true);
-  screens[name].hidden = false;
-  // スクロール位置をリセット
-  window.scrollTo(0, 0);
-  document.documentElement.scrollTop = 0;
-}
-
-// ---- テーマ ----
 const THEMES = ["cyber", "minimal", "luxe", "glass"];
 
 const THEME_CONFIG = {
@@ -31,15 +15,13 @@ const THEME_CONFIG = {
   glass:   { btn: "Sign In",  authLabel: "Signing in..." },
 };
 
+// ---- テーマ ----
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem("kk-theme", theme);
-
-  // ボタンラベルをテーマに合わせて更新（ログイン中でなければ）
   if (!loginBtn.disabled) {
     btnLabel.textContent = THEME_CONFIG[theme]?.btn ?? "LOGIN";
   }
-
   document.querySelectorAll(".theme-dot").forEach(dot => {
     dot.classList.toggle("active", dot.dataset.themeVal === theme);
     dot.setAttribute("aria-pressed", dot.dataset.themeVal === theme ? "true" : "false");
@@ -85,52 +67,35 @@ form.addEventListener("submit", (e) => {
   };
 
   btnLabel.textContent = THEME_CONFIG[theme]?.authLabel ?? "AUTHENTICATING...";
-  setTimeout(() => startLoading(loadingLines[theme] || loadingLines.cyber), 600);
+  document.getElementById("screen-login").hidden  = true;
+  document.getElementById("screen-loading").hidden = false;
+
+  startLoading(loadingLines[theme] || loadingLines.cyber, email);
 });
 
 // ---- ローディングログ演出 ----
-function startLoading(lines) {
-  show("loading");
+function startLoading(lines, email) {
   const logEl = document.getElementById("loading-log");
   logEl.textContent = "";
   let i = 0;
   const tick = () => {
     if (i >= lines.length) {
-      setTimeout(() => showSuccess(), 400);
+      setTimeout(() => redirect(email), 400);
       return;
     }
     logEl.textContent += lines[i] + "\n";
     i++;
     setTimeout(tick, 260 + Math.random() * 200);
   };
-  tick();
+  setTimeout(tick, 600);
 }
 
-// ---- 成功画面 ----
-function showSuccess() {
-  show("success");
-
-  const email = emailInput.value.trim();
-  const name  = email.split("@")[0].toUpperCase();
-  document.getElementById("welcome-name").textContent = "WELCOME, " + name;
-  document.getElementById("session-id").textContent =
-    Math.random().toString(36).slice(2, 10).toUpperCase();
-  document.getElementById("login-time").textContent =
-    new Date().toLocaleTimeString("ja-JP");
-
-  setTimeout(() => document.getElementById("welcome-name").focus({ preventScroll: true }), 50);
+// ---- success.html へリダイレクト ----
+function redirect(email) {
+  sessionStorage.setItem("kk-session", JSON.stringify({
+    name:      email.split("@")[0].toUpperCase(),
+    sessionId: Math.random().toString(36).slice(2, 10).toUpperCase(),
+    loginTime: new Date().toLocaleTimeString("ja-JP"),
+  }));
+  location.href = "success.html";
 }
-
-// ---- ログアウト ----
-logoutBtn.addEventListener("click", () => {
-  emailInput.value  = "";
-  pwInput.value     = "";
-  emailError.hidden = true;
-  errorMsg.hidden   = true;
-  loginBtn.disabled = false;
-
-  const theme = document.documentElement.dataset.theme;
-  btnLabel.textContent = THEME_CONFIG[theme]?.btn ?? "LOGIN";
-  show("login");
-  emailInput.focus();
-});
