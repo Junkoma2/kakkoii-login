@@ -38,7 +38,7 @@
 
     <div id="screen-loading" class="screen" hidden>
       <div class="loading-inner">
-        <pre id="loading-log" class="loading-log"></pre>
+        <pre id="loading-log" class="loading-log" aria-live="polite" aria-label="ログイン処理ログ"></pre>
       </div>
     </div>
 
@@ -50,7 +50,7 @@
           <span class="stamp-check">✓</span>
         </div>
         <div class="access-granted-text">ACCESS<br>GRANTED</div>
-        <h2 id="welcome-name"></h2>
+        <h2 id="welcome-name" tabindex="-1"></h2>
         <div class="info-grid">
           <div><span>ステータス</span><strong class="green">● ONLINE</strong></div>
           <div><span>認証レベル</span><strong>LEVEL 5</strong></div>

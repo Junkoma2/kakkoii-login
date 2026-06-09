@@ -85,6 +85,8 @@ function showSuccess() {
   const now = new Date();
   document.getElementById("login-time").textContent =
     now.toLocaleTimeString("ja-JP");
+  // フォーカスを成功画面に移動してスクリーンリーダーに通知
+  setTimeout(() => document.getElementById("welcome-name").focus(), 50);
 }
 
 // ---- ログアウト ----
