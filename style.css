@@ -1,48 +1,181 @@
-:root {
-  --bg: #050a0e;
-  --surface: #0d1117;
-  --border: #1f3040;
-  --accent: #00ff88;
-  --accent-dim: rgba(0,255,136,.15);
-  --text: #c9d1d9;
-  --muted: #4a5568;
-  font-family: "Courier New", Courier, monospace;
+/* ============================================================
+   テーマ変数
+   ============================================================ */
+
+/* CYBER（デフォルト） */
+[data-theme="cyber"] {
+  --bg:          #050a0e;
+  --surface:     #0d1117;
+  --border:      #1f3040;
+  --accent:      #00ff88;
+  --accent-dim:  rgba(0,255,136,.15);
+  --accent-glow: rgba(0,255,136,.5);
+  --text:        #c9d1d9;
+  --muted:       #4a5568;
+  --danger:      #ff4444;
+  --font:        "Courier New", Courier, monospace;
+  --radius:      4px;
+  --radius-sm:   2px;
+  --box-shadow:  0 0 60px rgba(0,255,136,.06);
+
+  --logo:        "⬡";
+  --title:       "SYSTEM LOGIN";
+  --subtitle:    "AUTHORIZED PERSONNEL ONLY";
+  --label-id:    "ID";
+  --label-pw:    "PASSWORD";
+  --btn-text:    "LOGIN";
+  --granted:     "ACCESS\A GRANTED";
+  --check:       "✓";
+  --logout:      "LOGOUT";
+  --dot-color:   #00ff88;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* MINIMAL */
+[data-theme="minimal"] {
+  --bg:          #f5f5f5;
+  --surface:     #ffffff;
+  --border:      #e0e0e0;
+  --accent:      #111111;
+  --accent-dim:  rgba(17,17,17,.06);
+  --accent-glow: rgba(17,17,17,.12);
+  --text:        #333333;
+  --muted:       #999999;
+  --danger:      #e53e3e;
+  --font:        -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --box-shadow:  0 4px 24px rgba(0,0,0,.08);
+
+  --logo:        "●";
+  --title:       "Sign in";
+  --subtitle:    "Welcome back";
+  --label-id:    "Email";
+  --label-pw:    "Password";
+  --btn-text:    "Continue";
+  --granted:     "You're\A in.";
+  --check:       "✓";
+  --logout:      "Sign out";
+  --dot-color:   #111111;
+}
+
+/* LUXE */
+[data-theme="luxe"] {
+  --bg:          #0c0a07;
+  --surface:     #141210;
+  --border:      #2e2820;
+  --accent:      #c9a84c;
+  --accent-dim:  rgba(201,168,76,.12);
+  --accent-glow: rgba(201,168,76,.4);
+  --text:        #e8dcc8;
+  --muted:       #6b5f4a;
+  --danger:      #e05c5c;
+  --font:        "Georgia", "Times New Roman", serif;
+  --radius:      2px;
+  --radius-sm:   1px;
+  --box-shadow:  0 0 80px rgba(201,168,76,.06);
+
+  --logo:        "◈";
+  --title:       "PRIVATE ACCESS";
+  --subtitle:    "Members Only";
+  --label-id:    "Account";
+  --label-pw:    "Passphrase";
+  --btn-text:    "ENTER";
+  --granted:     "ACCESS\A GRANTED";
+  --check:       "✦";
+  --logout:      "DEPART";
+  --dot-color:   #c9a84c;
+}
+
+/* GLASS */
+[data-theme="glass"] {
+  --bg:          #1a1040;
+  --surface:     rgba(255,255,255,.10);
+  --border:      rgba(255,255,255,.18);
+  --accent:      #e879f9;
+  --accent-dim:  rgba(232,121,249,.12);
+  --accent-glow: rgba(232,121,249,.5);
+  --text:        #f0e8ff;
+  --muted:       rgba(240,232,255,.45);
+  --danger:      #fb7185;
+  --font:        "SF Pro Display", -apple-system, "Segoe UI", sans-serif;
+  --radius:      20px;
+  --radius-sm:   12px;
+  --box-shadow:  0 8px 32px rgba(0,0,0,.36);
+
+  --logo:        "✦";
+  --title:       "WELCOME";
+  --subtitle:    "Sign in to continue";
+  --label-id:    "Email";
+  --label-pw:    "Password";
+  --btn-text:    "Sign In";
+  --granted:     "You're\A in ✦";
+  --check:       "✦";
+  --logout:      "Sign out";
+  --dot-color:   #e879f9;
+}
+
+/* ============================================================
+   ベーススタイル
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { height: 100%; }
 
 body {
+  font-family: var(--font);
   background: var(--bg);
   color: var(--text);
-  min-height: 100dvh;
+  min-height: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-#app { width: 100%; }
+/* GLASSのグラデーション背景 */
+[data-theme="glass"] body {
+  background: linear-gradient(135deg, #1a1040 0%, #0d0d2b 40%, #2d0a3e 100%);
+  background-attachment: fixed;
+}
 
-/* ---- screens ---- */
+#app {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   画面共通
+   ============================================================ */
 .screen {
   min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  position: relative;
 }
 
-/* ---- login ---- */
+.screen[hidden] { display: none; }
+
+/* ============================================================
+   ログイン画面
+   ============================================================ */
 .login-box {
   width: 100%;
   max-width: 400px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 40px 36px;
   position: relative;
   z-index: 1;
-  box-shadow: 0 0 60px rgba(0,255,136,.05);
+  box-shadow: var(--box-shadow);
+}
+
+[data-theme="glass"] .login-box {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .login-header {
@@ -50,80 +183,148 @@ body {
   margin-bottom: 36px;
 }
 
-.logo-mark {
+/* CSS content でテキストを差し込む */
+.logo-mark::before {
+  content: var(--logo);
   font-size: 32px;
   color: var(--accent);
-  margin-bottom: 12px;
   display: block;
+  margin-bottom: 12px;
 }
 
-h1 {
+.app-title::before {
+  content: var(--title);
   font-size: 20px;
   font-weight: 700;
-  letter-spacing: .3em;
+  letter-spacing: .2em;
   color: var(--accent);
+  display: block;
   margin-bottom: 6px;
 }
 
-.login-sub {
-  font-size: 10px;
-  letter-spacing: .15em;
+[data-theme="minimal"] .app-title::before {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.login-sub::before {
+  content: var(--subtitle);
+  font-size: 11px;
+  letter-spacing: .12em;
   color: var(--muted);
 }
 
-.field {
-  margin-bottom: 20px;
-}
+[data-theme="minimal"] .login-sub::before,
+[data-theme="glass"]   .login-sub::before { letter-spacing: .02em; font-size: 13px; }
 
-label {
+.field { margin-bottom: 20px; }
+
+.field-label-id::before { content: var(--label-id); }
+.field-label-pw::before { content: var(--label-pw); }
+
+.field-label-id,
+.field-label-pw {
   display: block;
   font-size: 11px;
-  letter-spacing: .15em;
+  letter-spacing: .12em;
   color: var(--muted);
   margin-bottom: 6px;
+}
+
+[data-theme="minimal"] .field-label-id,
+[data-theme="minimal"] .field-label-pw,
+[data-theme="glass"]   .field-label-id,
+[data-theme="glass"]   .field-label-pw {
+  letter-spacing: .02em;
+  font-size: 13px;
 }
 
 input {
   width: 100%;
-  background: #0a1520;
+  background: var(--accent-dim);
   border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--accent);
-  font-family: inherit;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font);
   font-size: 14px;
   padding: 10px 12px;
   outline: none;
-  transition: border-color .2s;
+  transition: border-color .2s, box-shadow .2s;
 }
 
-input:focus { border-color: var(--accent); }
+[data-theme="cyber"] input { color: var(--accent); }
+
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+[data-theme="minimal"] input:focus { box-shadow: 0 0 0 3px rgba(17,17,17,.08); }
 
 .error-msg {
-  color: #ff4444;
+  color: var(--danger);
   font-size: 12px;
   margin-top: 6px;
-  letter-spacing: .05em;
+  letter-spacing: .02em;
 }
 
 .login-btn {
   width: 100%;
   background: transparent;
   border: 1px solid var(--accent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--accent);
-  font-family: inherit;
+  font-family: var(--font);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: .3em;
+  letter-spacing: .25em;
   padding: 12px;
   cursor: pointer;
   margin-top: 8px;
-  transition: background .2s;
+  transition: background .2s, color .2s, box-shadow .2s;
 }
 
-.login-btn:hover { background: var(--accent-dim); }
+[data-theme="minimal"] .login-btn {
+  background: var(--accent);
+  color: #fff;
+  letter-spacing: .04em;
+  font-size: 15px;
+}
+
+[data-theme="minimal"] .login-btn:hover {
+  background: #333;
+  border-color: #333;
+}
+
+[data-theme="glass"] .login-btn {
+  background: var(--accent);
+  color: #fff;
+  letter-spacing: .05em;
+  font-size: 15px;
+  border: none;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+
+[data-theme="glass"] .login-btn:hover {
+  box-shadow: 0 0 32px var(--accent-glow);
+}
+
+.login-btn:not([data-theme="minimal"] .login-btn):not([data-theme="glass"] .login-btn):hover {
+  background: var(--accent-dim);
+}
+
+[data-theme="cyber"] .login-btn:hover,
+[data-theme="luxe"]  .login-btn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
 .login-btn:disabled { opacity: .5; cursor: default; }
 
+/* ============================================================
+   スキャンライン（cyber / luxe のみ表示）
+   ============================================================ */
 .scanline {
   pointer-events: none;
   position: fixed;
@@ -132,28 +333,73 @@ input:focus { border-color: var(--accent); }
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,.08) 2px,
-    rgba(0,0,0,.08) 4px
+    rgba(0,0,0,.07) 2px,
+    rgba(0,0,0,.07) 4px
   );
   z-index: 0;
+  display: none;
 }
 
-/* shake */
+[data-theme="cyber"] .scanline,
+[data-theme="luxe"]  .scanline { display: block; }
+
+/* ============================================================
+   テーマピッカー
+   ============================================================ */
+.theme-picker {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+}
+
+.theme-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: .4;
+  transition: opacity .2s, transform .2s;
+  background: var(--dot-color);
+}
+
+.theme-dot[data-theme-val="minimal"] { background: #111; }
+.theme-dot[data-theme-val="luxe"]    { background: #c9a84c; }
+.theme-dot[data-theme-val="glass"]   { background: #e879f9; }
+.theme-dot[data-theme-val="cyber"]   { background: #00ff88; }
+
+.theme-dot.active { opacity: 1; transform: scale(1.4); }
+.theme-dot:hover  { opacity: .8; }
+
+/* ============================================================
+   シェイク
+   ============================================================ */
 @keyframes shake {
   0%,100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
 }
 .shake { animation: shake .4s ease; }
 
-/* ---- loading ---- */
+/* ============================================================
+   ローディング画面
+   ============================================================ */
 #screen-loading {
-  background: var(--bg);
   flex-direction: column;
   align-items: flex-start;
   padding: 40px;
+}
+
+[data-theme="minimal"] #screen-loading,
+[data-theme="glass"]   #screen-loading {
+  align-items: center;
 }
 
 .loading-log {
@@ -162,27 +408,40 @@ input:focus { border-color: var(--accent); }
   color: var(--accent);
   white-space: pre-wrap;
   max-width: 600px;
+  font-family: "Courier New", Courier, monospace;
 }
 
-/* ---- success ---- */
+[data-theme="minimal"] .loading-log {
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--text);
+  text-align: center;
+}
+
+[data-theme="glass"] .loading-log {
+  text-align: center;
+  font-family: var(--font);
+}
+
+/* ============================================================
+   成功画面
+   ============================================================ */
 #screen-success {
-  position: relative;
-  background: var(--bg);
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .success-flash {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: var(--accent);
   opacity: 0;
-  animation: flash-in .6s ease-out forwards;
+  animation: flash-in .5s ease-out forwards;
   pointer-events: none;
   z-index: 0;
 }
 
 @keyframes flash-in {
-  0%   { opacity: .8; }
+  0%   { opacity: .7; }
   100% { opacity: 0; }
 }
 
@@ -195,17 +454,19 @@ input:focus { border-color: var(--accent); }
   align-items: center;
   gap: 24px;
   animation: success-rise .4s .1s ease-out both;
+  padding: 24px 0;
 }
 
 @keyframes success-rise {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* スタンプ */
 .success-stamp {
   position: relative;
-  width: 96px;
-  height: 96px;
+  width: 88px;
+  height: 88px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,75 +476,128 @@ input:focus { border-color: var(--accent); }
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 3px solid var(--accent);
-  box-shadow: 0 0 24px var(--accent), 0 0 60px rgba(0,255,136,.3);
-  animation: ring-pulse 2s ease-in-out infinite;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+  animation: ring-pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes ring-pulse {
-  0%, 100% { box-shadow: 0 0 24px var(--accent), 0 0 60px rgba(0,255,136,.3); }
-  50%       { box-shadow: 0 0 48px var(--accent), 0 0 100px rgba(0,255,136,.6); }
+  0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
+  50%       { box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-dim); }
 }
 
-.stamp-check {
-  font-size: 48px;
+.stamp-check::before {
+  content: var(--check);
+  font-size: 42px;
   color: var(--accent);
   line-height: 1;
 }
 
+[data-theme="minimal"] .stamp-ring {
+  animation: none;
+  box-shadow: 0 0 0 4px var(--accent-dim);
+}
+
+/* ACCESS GRANTED テキスト */
+.access-granted-text::before {
+  content: var(--granted);
+  white-space: pre;
+}
+
 .access-granted-text {
-  font-size: clamp(44px, 12vw, 80px);
+  font-size: clamp(36px, 10vw, 72px);
   font-weight: 900;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   line-height: 1.05;
   color: var(--accent);
-  text-shadow: 0 0 40px rgba(0,255,136,.7), 0 0 80px rgba(0,255,136,.3);
+}
+
+[data-theme="cyber"] .access-granted-text,
+[data-theme="luxe"]  .access-granted-text {
+  text-shadow: 0 0 30px var(--accent-glow);
+}
+
+[data-theme="minimal"] .access-granted-text {
+  font-size: clamp(28px, 8vw, 52px);
+  letter-spacing: -.02em;
+  color: var(--accent);
+  text-shadow: none;
+}
+
+[data-theme="glass"] .access-granted-text {
+  text-shadow: 0 0 40px var(--accent-glow);
 }
 
 h2 {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text);
-  letter-spacing: .25em;
+  letter-spacing: .2em;
   font-weight: 400;
 }
+
+[data-theme="minimal"] h2,
+[data-theme="glass"]   h2 { letter-spacing: .04em; }
 
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px 32px;
+  gap: 16px 28px;
   text-align: left;
   border: 1px solid var(--border);
-  padding: 20px 28px;
-  border-radius: 2px;
-  max-width: 360px;
+  padding: 18px 24px;
+  border-radius: var(--radius-sm);
+  max-width: 340px;
   width: 100%;
 }
 
+[data-theme="glass"] .info-grid {
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 .info-grid div { display: flex; flex-direction: column; gap: 4px; }
-.info-grid span { font-size: 10px; letter-spacing: .12em; color: var(--muted); }
-.info-grid strong { font-size: 14px; }
+.info-grid span { font-size: 10px; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+.info-grid strong { font-size: 13px; }
 .green { color: var(--accent); }
+
+/* LOGOUTボタン */
+.logout-btn::before { content: var(--logout); }
 
 .logout-btn {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--muted);
-  font-family: inherit;
+  font-family: var(--font);
   font-size: 11px;
   letter-spacing: .2em;
   padding: 8px 20px;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   transition: border-color .2s, color .2s;
 }
 
 .logout-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============================================================
+   バージョン
+   ============================================================ */
 .app-version {
   position: fixed;
   right: 12px;
   bottom: 8px;
   z-index: 10;
   margin: 0;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(128,128,128,.4);
   font: 11px/1 monospace;
+}
+
+/* ============================================================
+   prefers-reduced-motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .stamp-ring  { animation: none; }
+  .success-inner { animation: none; }
+  .success-flash { animation: none; opacity: 0; }
+  .shake       { animation: none; }
 }

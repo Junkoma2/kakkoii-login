@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-theme="cyber">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,53 +13,39 @@
     <div id="screen-login" class="screen">
       <div class="login-box">
         <div class="login-header">
-          <div class="logo-mark">⬡</div>
-          <h1>SYSTEM LOGIN</h1>
-          <p class="login-sub">AUTHORIZED PERSONNEL ONLY</p>
+          <div class="logo-mark" aria-hidden="true"></div>
+          <h1 class="app-title"></h1>
+          <p class="login-sub"></p>
         </div>
         <form id="login-form" autocomplete="off" novalidate>
           <div class="field">
-            <label for="email">ID</label>
+            <label for="email" class="field-label-id"></label>
             <input id="email" type="email" placeholder="user@example.com" spellcheck="false" autocapitalize="off" />
             <p id="email-error" class="error-msg" hidden>IDを入力してください</p>
           </div>
           <div class="field">
-            <label for="password">PASSWORD</label>
+            <label for="password" class="field-label-pw"></label>
             <input id="password" type="password" placeholder="••••••••" />
             <p id="error-msg" class="error-msg" hidden>パスワードが短すぎます</p>
           </div>
           <button id="login-btn" type="submit" class="login-btn">
-            <span id="btn-label">LOGIN</span>
+            <span id="btn-label"></span>
           </button>
         </form>
       </div>
-      <div class="scanline"></div>
+      <div class="scanline" aria-hidden="true"></div>
+      <div class="theme-picker" role="group" aria-label="テーマ選択">
+        <button class="theme-dot" data-theme-val="cyber"  aria-label="サイバー"></button>
+        <button class="theme-dot" data-theme-val="minimal" aria-label="ミニマル"></button>
+        <button class="theme-dot" data-theme-val="luxe"   aria-label="ラグジュアリー"></button>
+        <button class="theme-dot" data-theme-val="glass"  aria-label="グラス"></button>
+      </div>
     </div>
 
     <div id="screen-loading" class="screen" hidden>
       <div class="loading-inner">
         <pre id="loading-log" class="loading-log" aria-live="polite" aria-label="ログイン処理ログ"></pre>
       </div>
-    </div>
-
-    <div id="screen-success" class="screen" hidden>
-      <div class="success-flash"></div>
-      <div class="success-inner">
-        <div class="success-stamp">
-          <div class="stamp-ring"></div>
-          <span class="stamp-check">✓</span>
-        </div>
-        <div class="access-granted-text">ACCESS<br>GRANTED</div>
-        <h2 id="welcome-name" tabindex="-1"></h2>
-        <div class="info-grid">
-          <div><span>ステータス</span><strong class="green">● ONLINE</strong></div>
-          <div><span>認証レベル</span><strong>LEVEL 5</strong></div>
-          <div><span>セッション</span><strong id="session-id"></strong></div>
-          <div><span>ログイン時刻</span><strong id="login-time"></strong></div>
-        </div>
-        <button id="logout-btn" type="button" class="logout-btn">LOGOUT</button>
-      </div>
-      <div class="scanline"></div>
     </div>
 
     <p id="app-version" class="app-version"></p>

@@ -5,24 +5,42 @@ const emailInput = document.getElementById("email");
 const pwInput    = document.getElementById("password");
 const errorMsg   = document.getElementById("error-msg");
 const emailError = document.getElementById("email-error");
-const logoutBtn  = document.getElementById("logout-btn");
 
-const screens = {
-  login:   document.getElementById("screen-login"),
-  loading: document.getElementById("screen-loading"),
-  success: document.getElementById("screen-success"),
+const THEMES = ["cyber", "minimal", "luxe", "glass"];
+
+const THEME_CONFIG = {
+  cyber:   { btn: "LOGIN",    authLabel: "AUTHENTICATING..." },
+  minimal: { btn: "Continue", authLabel: "確認中..." },
+  luxe:    { btn: "ENTER",    authLabel: "VERIFYING..." },
+  glass:   { btn: "Sign In",  authLabel: "Signing in..." },
 };
 
-function show(name) {
-  Object.values(screens).forEach((s) => s.hidden = true);
-  screens[name].hidden = false;
+// ---- テーマ ----
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("kk-theme", theme);
+  if (!loginBtn.disabled) {
+    btnLabel.textContent = THEME_CONFIG[theme]?.btn ?? "LOGIN";
+  }
+  document.querySelectorAll(".theme-dot").forEach(dot => {
+    dot.classList.toggle("active", dot.dataset.themeVal === theme);
+    dot.setAttribute("aria-pressed", dot.dataset.themeVal === theme ? "true" : "false");
+  });
 }
+
+const savedTheme = localStorage.getItem("kk-theme");
+applyTheme(THEMES.includes(savedTheme) ? savedTheme : "cyber");
+
+document.querySelectorAll(".theme-dot").forEach(dot => {
+  dot.addEventListener("click", () => applyTheme(dot.dataset.themeVal));
+});
 
 // ---- ログイン処理 ----
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const email = emailInput.value.trim();
-  const pw = pwInput.value;
+  const pw    = pwInput.value;
+
   if (!email) {
     emailError.hidden = false;
     emailInput.closest(".field").classList.add("shake");
@@ -30,6 +48,7 @@ form.addEventListener("submit", (e) => {
     return;
   }
   emailError.hidden = true;
+
   if (pw.length <= 4) {
     errorMsg.hidden = false;
     pwInput.closest(".field").classList.add("shake");
@@ -38,64 +57,45 @@ form.addEventListener("submit", (e) => {
   }
   errorMsg.hidden = true;
   loginBtn.disabled = true;
-  btnLabel.textContent = "AUTHENTICATING...";
-  setTimeout(() => startLoading(), 600);
+
+  const theme = document.documentElement.dataset.theme;
+  const loadingLines = {
+    cyber:   ["> 接続を確立しています...", "> 認証プロトコルを初期化...", "> RSA-4096 鍵交換...", "> セキュアチャンネルを確立...", "> ユーザープロファイルを取得中...", "> アクセス権限を検証...", "> セッションを生成...", "> ログイン完了"],
+    minimal: ["メールアドレスを確認しています", "パスワードを検証しています", "プロフィールを読み込み中", "完了しました"],
+    luxe:    ["▸ 認証を開始します", "▸ 身元を確認しています", "▸ アクセス権を精査しています", "▸ 入室を許可します"],
+    glass:   ["✦ Verifying credentials", "✦ Loading your space", "✦ Almost there", "✦ Done"],
+  };
+
+  btnLabel.textContent = THEME_CONFIG[theme]?.authLabel ?? "AUTHENTICATING...";
+  document.getElementById("screen-login").hidden  = true;
+  document.getElementById("screen-loading").hidden = false;
+
+  startLoading(loadingLines[theme] || loadingLines.cyber, email);
 });
 
 // ---- ローディングログ演出 ----
-const LOG_LINES = [
-  "> 接続を確立しています...",
-  "> 認証プロトコルを初期化...",
-  "> RSA-4096 鍵交換...",
-  "> セキュアチャンネルを確立...",
-  "> ユーザープロファイルを取得中...",
-  "> アクセス権限を検証...",
-  "> セッションを生成...",
-  "> ログイン完了",
-];
-
-function startLoading() {
-  show("loading");
+function startLoading(lines, email) {
   const logEl = document.getElementById("loading-log");
   logEl.textContent = "";
   let i = 0;
   const tick = () => {
-    if (i >= LOG_LINES.length) {
-      setTimeout(() => showSuccess(), 500);
+    if (i >= lines.length) {
+      setTimeout(() => redirect(email), 400);
       return;
     }
-    logEl.textContent += LOG_LINES[i] + "\n";
+    logEl.textContent += lines[i] + "\n";
     i++;
-    setTimeout(tick, 280 + Math.random() * 220);
+    setTimeout(tick, 260 + Math.random() * 200);
   };
-  tick();
+  setTimeout(tick, 600);
 }
 
-// ---- 成功画面 ----
-function showSuccess() {
-  show("success");
-
-  const email = emailInput.value.trim();
-  const name = email.split("@")[0].toUpperCase();
-  document.getElementById("welcome-name").textContent = "WELCOME, " + name;
-
-  document.getElementById("session-id").textContent =
-    Math.random().toString(36).slice(2, 10).toUpperCase();
-
-  const now = new Date();
-  document.getElementById("login-time").textContent =
-    now.toLocaleTimeString("ja-JP");
-  // フォーカスを成功画面に移動してスクリーンリーダーに通知
-  setTimeout(() => document.getElementById("welcome-name").focus(), 50);
+// ---- success.html へリダイレクト ----
+function redirect(email) {
+  sessionStorage.setItem("kk-session", JSON.stringify({
+    name:      email.split("@")[0].toUpperCase(),
+    sessionId: Math.random().toString(36).slice(2, 10).toUpperCase(),
+    loginTime: new Date().toLocaleTimeString("ja-JP"),
+  }));
+  location.href = "success.html";
 }
-
-// ---- ログアウト ----
-logoutBtn.addEventListener("click", () => {
-  emailInput.value = "";
-  pwInput.value = "";
-  emailError.hidden = true;
-  errorMsg.hidden = true;
-  loginBtn.disabled = false;
-  btnLabel.textContent = "LOGIN";
-  show("login");
-});
