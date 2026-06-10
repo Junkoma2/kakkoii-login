@@ -20,12 +20,12 @@
         <form id="login-form" autocomplete="off" novalidate>
           <div class="field">
             <label for="email" class="field-label-id"></label>
-            <input id="email" type="email" placeholder="user@example.com" spellcheck="false" autocapitalize="off" />
+            <input id="email" type="email" placeholder="user@example.com" spellcheck="false" autocapitalize="off" autocomplete="new-password" />
             <p id="email-error" class="error-msg" hidden>IDを入力してください</p>
           </div>
           <div class="field">
             <label for="password" class="field-label-pw"></label>
-            <input id="password" type="password" placeholder="••••••••" />
+            <input id="password" type="password" placeholder="••••••••" autocomplete="new-password" />
             <p id="error-msg" class="error-msg" hidden>パスワードが短すぎます</p>
           </div>
           <button id="login-btn" type="submit" class="login-btn">
