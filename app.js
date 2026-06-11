@@ -15,10 +15,28 @@ const THEME_CONFIG = {
   glass:   { btn: "Sign In",  authLabel: "Signing in..." },
 };
 
+// ---- ストレージ ----
+// プライベートブラウズ等でlocalStorageが例外を投げても初期化を止めない
+function safeStorageGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // 保存できなくてもテーマ適用は続行する
+  }
+}
+
 // ---- テーマ ----
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
-  localStorage.setItem("kk-theme", theme);
+  safeStorageSet("kk-theme", theme);
   if (!loginBtn.disabled) {
     btnLabel.textContent = THEME_CONFIG[theme]?.btn ?? "LOGIN";
   }
@@ -28,7 +46,7 @@ function applyTheme(theme) {
   });
 }
 
-const savedTheme = localStorage.getItem("kk-theme");
+const savedTheme = safeStorageGet("kk-theme");
 applyTheme(THEMES.includes(savedTheme) ? savedTheme : "cyber");
 
 document.querySelectorAll(".theme-dot").forEach(dot => {
