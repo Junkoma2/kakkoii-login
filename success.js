@@ -5,9 +5,14 @@ if (!session) {
   location.replace("index.html");
 }
 
-// テーマ復元
+// テーマ復元（プライベートブラウズ等の例外時はデフォルトテーマで続行）
 const THEMES = ["cyber", "minimal", "luxe", "glass"];
-const savedTheme = localStorage.getItem("kk-theme");
+let savedTheme = null;
+try {
+  savedTheme = localStorage.getItem("kk-theme");
+} catch {
+  // 読み取れなければデフォルトテーマにフォールバック
+}
 document.documentElement.dataset.theme = THEMES.includes(savedTheme) ? savedTheme : "cyber";
 
 // 情報表示
