@@ -5,6 +5,7 @@ const emailInput = document.getElementById("email");
 const pwInput    = document.getElementById("password");
 const errorMsg   = document.getElementById("error-msg");
 const emailError = document.getElementById("email-error");
+let submitting = false;
 
 const THEMES = ["cyber", "minimal", "luxe", "glass"];
 
@@ -56,6 +57,8 @@ document.querySelectorAll(".theme-dot").forEach(dot => {
 // ---- ログイン処理 ----
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  if (submitting) return;
+
   const email = emailInput.value.trim();
   const pw    = pwInput.value;
 
@@ -74,6 +77,7 @@ form.addEventListener("submit", (e) => {
     return;
   }
   errorMsg.hidden = true;
+  submitting = true;
   loginBtn.disabled = true;
 
   const theme = document.documentElement.dataset.theme;
